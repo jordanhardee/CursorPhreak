@@ -1,0 +1,367 @@
+@font-face {
+  font-family: 'CP Tahoma';
+  src: local('Tahoma'), url('../fonts/tahoma.ttf') format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'CP Tahoma';
+  /* Real Tahoma Bold where installed (Windows). Wine's tahomabd.ttf only has bold bitmaps, its outlines
+     are regular weight, so elsewhere we let Chromium synthesize bold from the regular face instead. */
+  src: local('Tahoma Bold'), local('Tahoma-Bold');
+  font-weight: 700;
+}
+
+:root {
+  --bg: #bcdff5;
+  --navy: #001a78;
+  --navy-text: #000a64;
+  --sel: #0a2472;
+  --edge: #7d8f9a;
+  --sb-track: #c6d7fd;
+  --sb-face: #bccdfb;
+  --sb-face-2: #c9d8fd;
+  --sb-arrow: #4d6185;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 426px;
+  height: 530px;
+  overflow: hidden;
+  background: transparent;
+  font-family: 'CP Tahoma', Tahoma, Verdana, 'DejaVu Sans', sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+#win {
+  position: relative;
+  width: 426px;
+  height: 530px;
+  background: var(--bg);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--edge), inset 0 0 0 2px #d9eefb;
+  overflow: hidden;
+}
+
+/* ---------- Title / logo ---------- */
+#titlebar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 48px;
+  -webkit-app-region: drag;
+}
+#logo { position: absolute; left: 11px; top: 16px; pointer-events: none; }
+#tm {
+  position: absolute;
+  left: 278px;
+  top: 12px;
+  font: bold 8px/1 Arial, 'Liberation Sans', sans-serif;
+  color: #3e4f5d;
+  letter-spacing: -0.3px;
+}
+
+/* ---------- Glassy XP-era buttons ---------- */
+.glass {
+  -webkit-app-region: no-drag;
+  font-family: inherit;
+  color: var(--navy);
+  font-weight: bold;
+  border: 1px solid #a7c7e3;
+  border-radius: 4px;
+  background: linear-gradient(#ffffff 0%, #f2f9ff 38%, #dcedfb 62%, #c9e2f6 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .85), 0 1px 0 rgba(255, 255, 255, .6);
+  padding: 0;
+  cursor: default;
+  outline: none;
+}
+.glass:hover {
+  background: linear-gradient(#ffffff 0%, #f8fcff 38%, #e6f3fd 62%, #d4e9f9 100%);
+  border-color: #8fb6da;
+}
+.glass:active {
+  background: linear-gradient(#c6dff4 0%, #d9ebf9 50%, #eaf5fd 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 40, 100, .25);
+}
+.glass:focus-visible { box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #5d8fc9; }
+
+#close {
+  position: absolute;
+  left: 385px;
+  top: 11px;
+  width: 30px;
+  height: 28px;
+  font: bold 16px/1 Verdana, 'DejaVu Sans', sans-serif;
+  color: #0e1f86;
+  padding-top: 1px;
+}
+
+/* ---------- Panels ---------- */
+.panel {
+  position: absolute;
+  top: 52px;
+  height: 336px;
+  background: #fff;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  outline: none;
+  box-shadow: 0 0 0 1px #d2e6f3;
+}
+#tree { left: 11px; width: 129px; }
+#grid { left: 151px; width: 263px; padding: 0 0 0 4px; }
+
+/* Luna-ish lavender scrollbars, like the original */
+.panel::-webkit-scrollbar, #code::-webkit-scrollbar { width: 14px; }
+.panel::-webkit-scrollbar-track, #code::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #eef3ff 0, #eef3ff 1px, var(--sb-track) 1px);
+}
+.panel::-webkit-scrollbar-thumb, #code::-webkit-scrollbar-thumb {
+  border: 1px solid #fff;
+  border-radius: 2px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='8'%3E%3Cg fill='%23eef3ff'%3E%3Crect y='0' width='7' height='1'/%3E%3Crect y='2' width='7' height='1'/%3E%3Crect y='4' width='7' height='1'/%3E%3Crect y='6' width='7' height='1'/%3E%3C/g%3E%3Cg fill='%238da5d8'%3E%3Crect y='1' width='7' height='1'/%3E%3Crect y='3' width='7' height='1'/%3E%3Crect y='5' width='7' height='1'/%3E%3Crect y='7' width='7' height='1'/%3E%3C/g%3E%3C/svg%3E") center no-repeat,
+    linear-gradient(90deg, var(--sb-face-2), var(--sb-face) 60%, #b2c6f7);
+  box-shadow: inset 0 0 0 1px #a9bdf0;
+  min-height: 24px;
+}
+.panel::-webkit-scrollbar-thumb:hover, #code::-webkit-scrollbar-thumb:hover { filter: brightness(1.04); }
+.panel::-webkit-scrollbar-button:single-button, #code::-webkit-scrollbar-button:single-button {
+  display: block;
+  height: 17px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px #a9bdf0;
+  background-color: var(--sb-face);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.panel::-webkit-scrollbar-button:single-button:vertical:decrement, #code::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6'%3E%3Cpath d='M1 5 4.5 1.5 8 5' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E");
+}
+.panel::-webkit-scrollbar-button:single-button:vertical:increment, #code::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6'%3E%3Cpath d='M1 1 4.5 4.5 8 1' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E");
+}
+.panel::-webkit-scrollbar-button:single-button:active, #code::-webkit-scrollbar-button:single-button:active { background-color: #a9bff5; }
+
+/* ---------- Tree ---------- */
+.node { position: relative; }
+.row {
+  position: relative;
+  height: 18px;
+  white-space: nowrap;
+}
+/* vertical dotted line running through the boxes */
+#tree > .node::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: repeating-linear-gradient(#a0a0a0 0 1px, transparent 1px 2px);
+}
+#tree > .node:first-child::before { top: 8px; }
+#tree > .node:last-child::before { height: 8px; bottom: auto; }
+#tree > .node:last-child.open::before { height: 8px; }
+.row::after { /* horizontal connector */
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 8px;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #a0a0a0 0 1px, transparent 1px 2px);
+}
+.box {
+  position: absolute;
+  left: 3px;
+  top: 4px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #919b9c;
+  background: linear-gradient(135deg, #fff 0%, #f7f7f5 60%, #d4d0c8 100%);
+  z-index: 1;
+}
+.box::before, .box::after {
+  content: '';
+  position: absolute;
+  background: #000;
+}
+.box::before { left: 1px; top: 3px; width: 5px; height: 1px; }
+.box::after { left: 3px; top: 1px; width: 1px; height: 5px; }
+.node.open > .row > .box::after { display: none; }
+.label {
+  position: absolute;
+  left: 17px;
+  top: 0;
+  height: 15px;
+  line-height: 14px;
+  padding: 0 2px 0 2px;
+  font-size: 11px;
+  color: var(--navy-text);
+}
+.row.sel .label { background: var(--sel); color: #fff; }
+#tree:focus .row.sel .label { outline: 1px dotted #f7d34a; outline-offset: -1px; }
+.children { display: none; position: relative; }
+.node.open > .children { display: block; }
+/* children: indented, with their own dotted elbow */
+.children .row { margin-left: 19px; }
+.children .row::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0;
+  width: 1px;
+  height: 18px;
+  background: repeating-linear-gradient(#a0a0a0 0 1px, transparent 1px 2px);
+}
+.children .row:last-child::before { height: 9px; }
+.children .row::after { left: 8px; width: 8px; }
+.children .label { left: 17px; }
+
+/* ---------- Cursor grid ---------- */
+.cell {
+  float: left;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+.cell img { width: 32px; height: 32px; image-rendering: pixelated; pointer-events: none; }
+.cell:hover { background: #eef5fd; border-color: #c8ddf3; }
+.cell.sel { background: #dcebfb; border-color: #7aa7dd; }
+.cell.busy { opacity: .55; }
+#grid .empty { padding: 20px 12px; font-size: 11px; color: var(--navy-text); }
+
+/* ---------- Buttons row ---------- */
+.btn { position: absolute; top: 398px; height: 27px; font-size: 11px; }
+#btn-new { left: 12px; width: 87px; }
+#btn-friend { left: 102px; width: 88px; }
+#btn-help { left: 194px; width: 115px; }
+#btn-default { left: 313px; width: 101px; }
+
+/* ---------- Code area ---------- */
+#blurb {
+  position: absolute;
+  left: 10px;
+  top: 436px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 15px;
+  color: var(--navy-text);
+  white-space: nowrap;
+}
+#current {
+  position: absolute;
+  left: 10px;
+  top: 479px;
+  width: 32px;
+  height: 32px;
+}
+#current img { width: 32px; height: 32px; image-rendering: pixelated; }
+#current img:not([src]) { visibility: hidden; }
+/* "copy as" CSS / JS: sits where the original's Copy Code button was */
+#fmt {
+  position: absolute;
+  left: 357px;
+  top: 470px;
+  width: 54px;
+}
+#fmt-label {
+  height: 12px;
+  font-size: 9px;
+  line-height: 11px;
+  text-align: center;
+  color: #6f93b8;
+  letter-spacing: 0.3px;
+}
+.fmt {
+  display: block;
+  width: 54px;
+  height: 18px;
+  margin-top: 1px;
+  font-size: 11px;
+  line-height: 16px;
+  border-radius: 3px;
+}
+.fmt[aria-pressed="true"] {
+  background: linear-gradient(#bcd8f1 0%, #d2e6f8 55%, #e4f1fc 100%);
+  border-color: #6f9bcd;
+  box-shadow: inset 0 1px 2px rgba(0, 40, 100, .25);
+}
+.fmt.done { color: #0f7a1c; }
+#code {
+  position: absolute;
+  left: 49px;
+  top: 473px;
+  width: 302px;
+  height: 47px;
+  margin: 0;
+  padding: 1px 2px 0 3px;
+  border: 1px solid #1c3f94;
+  background: #fff;
+  resize: none;
+  font: 12px/13px 'Courier New', 'Liberation Mono', Cousine, 'Nimbus Mono PS', monospace;
+  color: #000;
+  overflow-y: scroll;
+  word-break: break-all;
+  -webkit-user-select: text;
+  user-select: text;
+  outline: none;
+}
+#code::-webkit-scrollbar-button:single-button { height: 15px; }
+
+/* ---------- Modal dialogs ---------- */
+#modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(70, 110, 150, .35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+#modal[hidden] { display: none; }
+#dialog {
+  width: 340px;
+  max-height: 440px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid #5d7d97;
+  border-radius: 6px;
+  box-shadow: 0 6px 24px rgba(0, 30, 70, .35), inset 0 0 0 1px #e3f2fc;
+  padding: 10px 12px 12px;
+}
+#dlg-title { font-weight: bold; font-size: 14px; color: var(--navy); margin-bottom: 8px; }
+#dlg-body {
+  background: #fff;
+  box-shadow: 0 0 0 1px #c3dbec;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--navy-text);
+  overflow-y: auto;
+  -webkit-user-select: text;
+  user-select: text;
+}
+#dlg-body h4 { margin: 8px 0 2px; font-size: 11px; }
+#dlg-body h4:first-child { margin-top: 0; }
+#dlg-body p { margin: 0 0 6px; }
+#dlg-body ul { margin: 0 0 6px; padding-left: 16px; }
+#dlg-body code { font-family: 'Courier New', 'Liberation Mono', monospace; font-size: 11px; }
+#dlg-actions { text-align: right; margin-top: 10px; }
+#dlg-actions .btn { position: static; width: 80px; }
+
+/* Where real Tahoma Bold isn't installed (Linux), Chromium's synthetic bold runs ~1px wider per glyph. */
+.synth-bold .btn { font-size: 11px; letter-spacing: -0.75px; }
+.synth-bold #close, .synth-bold .fmt { letter-spacing: 0; }
+
+/* Engines that don't synthesize bold at all (WebKitGTK): draw the strokes heavier instead. */
+.fake-bold .glass { -webkit-text-stroke: 0.4px currentColor; letter-spacing: 0.25px; }
+.fake-bold .btn { font-size: 11px; }

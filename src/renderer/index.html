@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' cp: data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'">
+  <title>CursorPhreak</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="win">
+    <header id="titlebar">
+      <img id="logo" src="logo.png" srcset="logo.png 1x, logo@2x.png 2x" width="264" height="21" alt="CursorPhreak" draggable="false">
+      <span id="tm">TM</span>
+      <button id="close" class="glass" title="Close" aria-label="Close">X</button>
+    </header>
+
+    <div id="tree" class="panel" role="tree" tabindex="0" aria-label="Categories"></div>
+    <div id="grid" class="panel" role="listbox" tabindex="0" aria-label="Cursors"></div>
+
+    <div id="buttons">
+      <button id="btn-new" class="glass btn">What's New</button>
+      <button id="btn-friend" class="glass btn">Tell a Friend</button>
+      <button id="btn-help" class="glass btn">Help &amp; Feedback</button>
+      <button id="btn-default" class="glass btn">Default Cursor</button>
+    </div>
+
+    <p id="blurb">Do you use Neocities, own a blog or manage a website?<br>Copy and paste this code into any place that allows CSS:</p>
+
+    <div id="current"><img id="current-img" alt="" draggable="false"></div>
+    <textarea id="code" readonly spellcheck="false" wrap="soft"></textarea>
+    <div id="fmt" role="group" aria-label="Copy as">
+      <div id="fmt-label">copy as</div>
+      <button id="fmt-css" class="glass fmt" data-fmt="css" data-label="CSS">CSS</button>
+      <button id="fmt-js" class="glass fmt" data-fmt="js" data-label="JS">JS</button>
+    </div>
+
+    <div id="modal" hidden>
+      <div id="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+        <div id="dlg-title"></div>
+        <div id="dlg-body"></div>
+        <div id="dlg-actions"><button id="dlg-ok" class="glass btn">OK</button></div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
