@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('cp', {
   apply: (id) => ipcRenderer.invoke('apply', id),
   restore: () => ipcRenderer.invoke('restore'),
   snippet: (id) => ipcRenderer.invoke('snippet', id),
+  favorite: (id, on) => ipcRenderer.invoke('favorite', id, on),
   copy: (text) => ipcRenderer.invoke('copy', text),
   mail: () => ipcRenderer.invoke('mail'),
   close: () => ipcRenderer.send('close'),

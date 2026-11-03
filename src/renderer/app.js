@@ -14,6 +14,9 @@ let currentId = null;
 let platformName = '';
 let applying = false;
 let snippetSet = null; // { css, js } for the current cursor
+// "Favorites" lives at the top of the tree like any category; its list is saved by the main process.
+const favNode = { n: 'Favorites', k: 'favorites', i: [], c: [] };
+let favSet = new Set();
 
 const store = {
   get(k, d) {
@@ -142,7 +145,10 @@ function renderGrid(ids) {
   if (!ids.length) {
     const p = document.createElement('div');
     p.className = 'empty';
-    p.textContent = 'Pick a sub-category on the left.';
+    p.textContent =
+      selectedKey === favNode.k
+        ? 'No favorites yet. Click a cursor to use it, then click Favorite to keep it here.'
+        : 'Pick a sub-category on the left.';
     gridEl.appendChild(p);
     return;
   }
@@ -153,6 +159,7 @@ function renderGrid(ids) {
     cell.dataset.id = id;
     cell.setAttribute('role', 'option');
     if (id === currentId) cell.classList.add('sel');
+    if (favSet.has(id)) cell.classList.add('fav');
     const img = document.createElement('img');
     img.loading = 'lazy';
     img.decoding = 'async';
@@ -198,7 +205,36 @@ function setCurrent(id, snippets) {
     currentImg.removeAttribute('src');
   }
   showCode();
+  updateFavButton();
 }
+
+// ---------------- Favorites ----------------
+const favBtn = $('#fav');
+function setFavorites(list) {
+  favNode.i = list;
+  favSet = new Set(list);
+  for (const c of gridEl.querySelectorAll('.cell')) c.classList.toggle('fav', favSet.has(c.dataset.id));
+  updateFavButton();
+}
+function updateFavButton() {
+  const on = !!currentId && favSet.has(currentId);
+  favBtn.disabled = !currentId;
+  favBtn.setAttribute('aria-pressed', String(on));
+  favBtn.title = !currentId ? 'Pick a cursor first' : on ? 'Remove from Favorites' : 'Add to Favorites';
+}
+favBtn.addEventListener('click', async () => {
+  if (!currentId) return;
+  try {
+    setFavorites(await cp.favorite(currentId, !favSet.has(currentId)));
+    if (selectedKey === favNode.k) {
+      const top = gridEl.scrollTop;
+      renderGrid(favNode.i);
+      gridEl.scrollTop = top;
+    }
+  } catch (err) {
+    showDialog('Couldn’t update Favorites', `<p>${escapeHtml(cleanErr(err))}</p>`);
+  }
+});
 
 // ---------------- Copy as CSS / JS ----------------
 // The box shows the format last copied; clicking CSS or JS switches to it and copies in one go.
@@ -243,12 +279,17 @@ $('#btn-default').addEventListener('click', async () => {
 $('#btn-friend').addEventListener('click', () => cp.mail());
 
 $('#btn-new').addEventListener('click', () => {
-  const total = new Set(cats.flatMap((c) => [...c.i, ...c.c.flatMap((ch) => ch.i)])).size;
+  const real = cats.filter((c) => c !== favNode);
+  const total = new Set(real.flatMap((c) => [...c.i, ...c.c.flatMap((ch) => ch.i)])).size;
   showDialog(
     'What’s New',
-    `<h4>CursorPhreak 1.0</h4>
+    `<h4>CursorPhreak 1.0.1</h4>
      <ul>
-       <li>${total.toLocaleString()} classic cursors in ${cats.length} categories, rescued from the CursorMania archive.</li>
+       <li>Favorites: click Favorite to keep a cursor in the Favorites section at the top of the list.</li>
+     </ul>
+     <h4>CursorPhreak 1.0</h4>
+     <ul>
+       <li>${total.toLocaleString()} classic cursors in ${real.length} categories, rescued from the CursorMania archive.</li>
        <li>Works on Windows 10/11, macOS 12 and later (including Tahoe), Linux, FreeBSD and OpenBSD (GNOME, KDE Plasma, Xfce, Cinnamon, MATE, Hyprland, Sway and plain X11 window managers).</li>
        <li>Animated cursors stay animated.</li>
        <li>Old white-box cursors now have transparent backgrounds.</li>
@@ -276,6 +317,8 @@ $('#btn-help').addEventListener('click', () => {
     'Help & Feedback',
     `<h4>Changing your cursor</h4>
      <p>Pick a category on the left, then click any cursor. Your mouse pointer changes right away and stays changed after a restart.</p>
+     <h4>Favorites</h4>
+     <p>After picking a cursor, click <b>Favorite</b> (above "copy as") to add it to the <b>Favorites</b> section at the top of the list. Click it again to remove it. Favorited cursors get a small gold star.</p>
      <h4>Going back to normal</h4>
      <p>Click <b>Default Cursor</b> to put back the pointer you had before.</p>
      <h4>Lefties</h4>
@@ -325,13 +368,14 @@ function boldMode() {
 // ---------------- Boot ----------------
 (async function init() {
   const data = await cp.catalog();
-  cats = data.cats;
+  cats = [favNode, ...data.cats];
   platformName = data.platform;
+  setFavorites(data.favorites || []);
   await document.fonts.ready;
   const bold = boldMode();
   if (bold !== 'real') document.body.classList.add(bold);
   buildTree();
-  const startKey = findNode(store.get('cat', '')) ? store.get('cat') : cats[0].k;
+  const startKey = findNode(store.get('cat', '')) ? store.get('cat') : data.cats[0].k;
   // Make sure a remembered sub-category is visible.
   const parent = cats.find((c) => c.c.some((ch) => ch.k === startKey));
   if (parent) toggle(parent.k, true);

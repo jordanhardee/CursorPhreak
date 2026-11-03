@@ -1,7 +1,7 @@
 {
   "name": "cursorphreak",
   "productName": "CursorPhreak",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A modern recreation of the CursorMania cursor picker for Windows and Linux.",
   "main": "src/main.js",
   "author": {

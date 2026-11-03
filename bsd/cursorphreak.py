@@ -55,6 +55,7 @@ BRIDGE_JS = r"""
     apply: (id) => call('apply', id),
     restore: () => call('restore'),
     snippet: (id) => call('snippet', id),
+    favorite: (id, on) => call('favorite', id, on),
     copy: (text) => call('copy', text),
     mail: () => call('mail'),
     close: () => call('close'),
@@ -199,6 +200,8 @@ class CursorPhreak:
             return b.restore()
         if method == "snippet":
             return b.snippet(str(args[0]))
+        if method == "favorite":
+            return b.favorite(str(args[0]), bool(args[1]))
         if method == "copy":
             cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
             cb.set_text(str(args[0]), -1)

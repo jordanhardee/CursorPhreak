@@ -123,7 +123,22 @@ if (!single) {
       return new Response(p.data, { headers: { 'content-type': p.mime, 'cache-control': 'max-age=31536000' } });
     });
 
-    ipcMain.handle('catalog', () => ({ cats: catalog.tree(), current: state.current || null, platform: platform.name }));
+    const favorites = () => (Array.isArray(state.favorites) ? state.favorites : []).filter((id) => catalog.has(id));
+    ipcMain.handle('catalog', () => ({
+      cats: catalog.tree(),
+      current: state.current || null,
+      favorites: favorites(),
+      platform: platform.name,
+    }));
+    // Newest favorite first. Returns the updated list.
+    ipcMain.handle('favorite', (_e, id, on) => {
+      if (!catalog.has(id)) throw new Error('Unknown cursor');
+      const list = favorites().filter((x) => x !== id);
+      if (on) list.unshift(id);
+      state.favorites = list;
+      saveState();
+      return list;
+    });
     ipcMain.handle('apply', (_e, id) => {
       if (!catalog.has(id)) throw new Error('Unknown cursor');
       const res = platform.apply(catalog.cursor(id));

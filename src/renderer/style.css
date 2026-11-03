@@ -236,6 +236,17 @@ html, body {
 .cell:hover { background: #eef5fd; border-color: #c8ddf3; }
 .cell.sel { background: #dcebfb; border-color: #7aa7dd; }
 .cell.busy { opacity: .55; }
+.cell { position: relative; }
+.cell.fav::after { /* small gold star on favorited cursors */
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 9px;
+  height: 9px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5%20.6%206.3%203.5%209.5%203.8%207.1%206%207.8%209.3%205%207.6%202.2%209.3%202.9%206%20.5%203.8%203.7%203.5Z' fill='%23ffc21a' stroke='%23b07800' stroke-width='.9' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  pointer-events: none;
+}
 #grid .empty { padding: 20px 12px; font-size: 11px; color: var(--navy-text); }
 
 /* ---------- Buttons row ---------- */
@@ -265,6 +276,32 @@ html, body {
 }
 #current img { width: 32px; height: 32px; image-rendering: pixelated; }
 #current img:not([src]) { visibility: hidden; }
+/* Favorite toggle for the selected cursor, above "copy as" */
+#fav {
+  position: absolute;
+  left: 357px;
+  top: 443px;
+  width: 54px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 2px;
+  font-size: 9px;
+  letter-spacing: 0;
+}
+#fav svg { flex: none; overflow: visible; }
+#fav svg path { fill: #fff; stroke: #6a83a8; stroke-width: 0.9; stroke-linejoin: round; }
+#fav[aria-pressed="true"] {
+  background: linear-gradient(#fff3c4 0%, #ffe68a 55%, #ffd95a 100%);
+  border-color: #d3a72c;
+  color: #6b4a00;
+}
+#fav[aria-pressed="true"] svg path { fill: #ffc21a; stroke: #b07800; }
+#fav:disabled { opacity: .5; }
+#fav:disabled:hover { background: linear-gradient(#ffffff 0%, #f2f9ff 38%, #dcedfb 62%, #c9e2f6 100%); border-color: #a7c7e3; }
+
 /* "copy as" CSS / JS: sits where the original's Copy Code button was */
 #fmt {
   position: absolute;
@@ -361,7 +398,10 @@ html, body {
 /* Where real Tahoma Bold isn't installed (Linux), Chromium's synthetic bold runs ~1px wider per glyph. */
 .synth-bold .btn { font-size: 11px; letter-spacing: -0.75px; }
 .synth-bold #close, .synth-bold .fmt { letter-spacing: 0; }
+.synth-bold #fav { letter-spacing: -0.3px; }
 
 /* Engines that don't synthesize bold at all (WebKitGTK): draw the strokes heavier instead. */
 .fake-bold .glass { -webkit-text-stroke: 0.4px currentColor; letter-spacing: 0.25px; }
 .fake-bold .btn { font-size: 11px; }
+
+.fake-bold #fav { letter-spacing: 0.35px; -webkit-text-stroke: 0.2px currentColor; }

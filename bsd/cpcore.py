@@ -367,8 +367,24 @@ class Backend:
         os.replace(tmp, self.state_path)
 
     # IPC methods, same names and results as the Electron preload API
+    def favorites(self):
+        favs = self.state.get("favorites")
+        return [i for i in favs if self.catalog.has(i)] if isinstance(favs, list) else []
+
     def catalog_info(self):
-        return {"cats": self.catalog.cats, "current": self.state.get("current"), "platform": self.platform.name}
+        return {"cats": self.catalog.cats, "current": self.state.get("current"), "favorites": self.favorites(),
+                "platform": self.platform.name}
+
+    def favorite(self, cid, on):
+        """Newest favorite first, same as the Electron build. Returns the updated list."""
+        if not self.catalog.has(cid):
+            raise ValueError("Unknown cursor")
+        favs = [i for i in self.favorites() if i != cid]
+        if on:
+            favs.insert(0, cid)
+        self.state["favorites"] = favs
+        self.save_state()
+        return favs
 
     def apply(self, cid):
         if not self.catalog.has(cid):
