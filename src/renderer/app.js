@@ -289,7 +289,7 @@ $('#btn-new').addEventListener('click', () => {
      </ul>
      <h4>CursorPhreak 1.0</h4>
      <ul>
-       <li>${total.toLocaleString()} classic cursors in ${real.length} categories, rescued from the CursorMania archive.</li>
+       <li>${total.toLocaleString()} classic cursors in ${real.length} categories, rescued from the original cursor archive.</li>
        <li>Works on Windows 10/11, macOS 12 and later (including Tahoe), Linux, FreeBSD and OpenBSD (GNOME, KDE Plasma, Xfce, Cinnamon, MATE, Hyprland, Sway and plain X11 window managers).</li>
        <li>Animated cursors stay animated.</li>
        <li>Old white-box cursors now have transparent backgrounds.</li>

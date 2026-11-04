@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Turn the CursorMania GIF archive into CursorPhreak's packed asset bundle.
+Turn the classic cursor GIF archive into CursorPhreak's packed asset bundle.
 
-Usage:  python3 -I tools/build_catalog.py "<path to CURSORMANIA ARCHIVE>" assets/
+Usage:  python3 -I tools/build_catalog.py "<path to source cursor archive>" assets/
 
 Output:
   assets/catalog.json  category tree + per-cursor metadata

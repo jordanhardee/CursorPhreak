@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draw the CURSORPHREAK wordmark in the style of the original CursorMania logo.
+"""Draw the CURSORPHREAK wordmark in a classic desktop cursor-picker style.
 
 Glyphs are built from rounded rectangles minus cut-outs on a small grid, rendered at high
 resolution and downsampled, so the result is crisp at 1x and 2x.

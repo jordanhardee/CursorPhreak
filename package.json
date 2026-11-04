@@ -2,7 +2,7 @@
   "name": "cursorphreak",
   "productName": "CursorPhreak",
   "version": "1.0.1",
-  "description": "A modern recreation of the CursorMania cursor picker for Windows and Linux.",
+  "description": "CursorPhreak: a classic cursor picker for Windows, macOS, Linux and BSD.",
   "main": "src/main.js",
   "author": {
     "name": "jordanhardee",
@@ -29,7 +29,7 @@
   "build": {
     "appId": "app.cursorphreak.CursorPhreak",
     "productName": "CursorPhreak",
-    "copyright": "CursorPhreak. Cursors from the CursorMania archive; all rights to their respective owners.",
+    "copyright": "CursorPhreak. Classic cursor artwork; all rights to the respective owners.",
     "directories": {
       "buildResources": "build",
       "output": "dist"
@@ -64,7 +64,7 @@
       ],
       "category": "Utility",
       "icon": "build/icon.png",
-      "synopsis": "Classic CursorMania cursors for your desktop",
+      "synopsis": "Classic CursorPhreak cursors for your desktop",
       "executableName": "cursorphreak",
       "syncDesktopName": true,
       "files": [
@@ -121,7 +121,7 @@
         "!node_modules/koffi/build/koffi/{linux_*,win32_*}/**"
       ],
       "extendInfo": {
-        "NSHumanReadableCopyright": "Cursors from the CursorMania archive; all rights to their respective owners."
+        "NSHumanReadableCopyright": "Classic cursor artwork; all rights to the respective owners."
       }
     }
   },

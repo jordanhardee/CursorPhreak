@@ -21,7 +21,7 @@ NAME = "CursorPhreak-%s-bsd" % VERSION
 README = """CursorPhreak %s for FreeBSD and OpenBSD
 =========================================
 
-Classic CursorMania cursors for your desktop. Pick a category, click a cursor, and your mouse pointer changes.
+Classic animated cursors for your desktop. Pick a category, click a cursor, and your mouse pointer changes.
 
 1. Install the dependencies (Python 3 + PyGObject + GTK 3 + WebKitGTK):
      FreeBSD:  pkg install webkit2-gtk_41 devel/py-gobject3

@@ -68,7 +68,7 @@ cat >"$APPS/cursorphreak.desktop" <<EOF
 [Desktop Entry]
 Type=Application
 Name=CursorPhreak
-Comment=Classic CursorMania cursors for your desktop
+Comment=Classic animated cursors for your desktop
 Exec=$BIN/cursorphreak
 Icon=$ICONS/cursorphreak.png
 Categories=Utility;Settings;DesktopSettings;

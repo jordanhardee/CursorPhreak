@@ -162,7 +162,7 @@ if (!single) {
         'mailto:?subject=' +
           encodeURIComponent('Check out CursorPhreak!') +
           '&body=' +
-          encodeURIComponent('I just found CursorPhreak: over 11,000 classic CursorMania cursors for Windows, Mac, Linux and BSD. One click and your mouse pointer is a sparkly rainbow arrow (or a pig, or a pizza).')
+          encodeURIComponent('I just found CursorPhreak: over 11,000 classic cursors for Windows, Mac, Linux and BSD. One click and your mouse pointer is a sparkly rainbow arrow (or a pig, or a pizza).')
       )
     );
     ipcMain.on('close', () => app.quit());

@@ -66,7 +66,7 @@ BRIDGE_JS = r"""
 
 MAIL_URI = "mailto:?subject=%s&body=%s" % (
     quote("Check out CursorPhreak!"),
-    quote("I just found CursorPhreak: over 11,000 classic CursorMania cursors for Windows, Mac, Linux and BSD. "
+    quote("I just found CursorPhreak: over 11,000 classic cursors for Windows, Mac, Linux and BSD. "
           "One click and your mouse pointer is a sparkly rainbow arrow (or a pig, or a pizza)."),
 )
 
